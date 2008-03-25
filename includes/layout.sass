@@ -32,11 +32,12 @@
 
 // Will autosize to longest 'word' in self.
 // FIXME: Needs superfluous, blank <div> wrapper within itself to work
-// TODO: Needs javascript to replace whitespace with non-breaking space
-// FIXME: Possible pure-CSS solution, without javascript?
 .autosize
   :display table
   
   & > *
     :display table-cell
     :width 1px
+    
+    .as
+      :white-space nowrap
