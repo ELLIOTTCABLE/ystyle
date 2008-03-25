@@ -1,0 +1,40 @@
+/* ==== General (yStyle/general.sass) ====
+// Created by elliottcable (elliottcable.name)
+// Part of the ystyle SASS/CSS pack (find.yreality.net/ystyle)
+// Licensed as Creative Commons BY-NC-SA 3.0
+// -  (creativecommons.org/licenses/by-nc-sa/3.0)
+
+// STOP! COLORTIME.
+!Text = #000000
+!Background = #FFFFFF
+!Border = #888888
+
+// Let's do some Math, kids!
+
+// Delta computation will change based on whether the foreground color is
+//   light and the background is dark, or vice versa. First line here is
+//   for dark Text on light ContentBackground, second is for light on dark.
+!Delta = !Background - !Text
+// !Delta = !Text - !ContentBackground
+
+!Mod = 0.30 * !Delta
+!SMod = 0.10 * !Delta
+
+// Now, these probably don't need adjusting... Why don't you toddy on back up?
+!TextDim = !Text + !Mod
+!TextVeryDim = !Text + (2 * !Mod)
+!TextBright = !Text - !Mod
+!TextVeryBright = !Text - (2 * !Mod)
+
+// Back to your regularly scheduled SASS.
+html
+  color = !Text
+  background-color = !Background
+  
+  font-size: 1em
+  line-height: 1.3
+  
+div#content
+  margin:
+    left: 4px
+    right: 4px
