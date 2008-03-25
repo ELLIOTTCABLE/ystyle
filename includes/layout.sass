@@ -4,6 +4,9 @@
 // Licensed as Creative Commons BY-NC-SA 3.0
 // -  (creativecommons.org/licenses/by-nc-sa/3.0)
 
+// Will true-center an element. Can only be one done with this method on a
+// page, hence using an ID instead of a class.
+// TODO: Rename to #centre?
 #center-me
   :height 100%
   :display table !important
@@ -13,6 +16,8 @@
     :display table-cell !important
     :vertical-align middle !important
 
+// All children of this class will be equidistant from eachother.
+// FIXME: First element will be... squashed
 .equidistant
   :display table !important
   
@@ -24,3 +29,14 @@
     
     & > *
       :float right
+
+// Will autosize to longest 'word' in self.
+// FIXME: Needs superfluous, blank <div> wrapper within itself to work
+// TODO: Needs javascript to replace whitespace with non-breaking space
+// FIXME: Possible pure-CSS solution, without javascript?
+.autosize
+  :display table
+  
+  & > *
+    :display table-cell
+    :width 1px
