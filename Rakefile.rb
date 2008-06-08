@@ -17,13 +17,14 @@ task :update do
     puts 'SASS updated!'
   else
     puts 'SASS update failed'
+    exit
   end
 end
 
 desc 'Clear compiled CSS files'
-task :clear do
+task :clobber do
   puts 'Clearing CSS...'
-  Dir['./compiled/*.css'].each do |file|
+  Dir['./compiled/**.css'].each do |file|
     File.delete file
     print "#{File.basename(file)} deleted, "
   end
@@ -31,15 +32,23 @@ task :clear do
 end
 
 desc 'Compile SASS templates to CSS'
-task :compile => [:clear] do
+task :compile => [:clobber] do
   puts 'Compiling SASS...'
   Dir['./*.sass'].each do |sass_filename|
     File.open(sass_filename, 'r') do |sass_file|
+      content = sass_file.read
+      
       css_filename = sass_filename.gsub('.sass','.css').gsub('./','./compiled/')
       File.open(css_filename,'w') do |css_file|
-        css_file << Sass::Engine.new(sass_file.read, :style => :compressed, :filename => sass_filename.to_s, :load_paths => ['.']).to_css
-        puts " - #{File.basename(sass_filename)} compiled to #{File.basename(css_file.path)}"
+        css_file << Sass::Engine.new(content, :style => :compressed, :filename => sass_filename.to_s, :load_paths => ['.']).to_css
       end
+      
+      xcss_filename = sass_filename.gsub('.sass','.x.css').gsub('./','./compiled/')
+      File.open(xcss_filename,'w') do |xcss_file|
+        xcss_file << Sass::Engine.new(content, :style => :nested, :filename => sass_filename.to_s, :load_paths => ['.']).to_css
+      end
+      
+      puts " - #{File.basename(sass_filename)} compiled to #{File.basename(css_filename)} & #{File.basename(xcss_filename)}"
     end
   end
   puts 'SASS compiled!'
@@ -50,7 +59,7 @@ task :test do
   Dir['./includes/*.sass'].each do |sass_filename|
     File.open(sass_filename, 'r') do |sass_file|
       begin
-        Sass::Engine.new(sass_file.read, :style => :compressed, :filename => sass_filename.to_s, :load_paths => ['.']).to_css
+        Sass::Engine.new(sass_file.read, :style => :nested, :filename => sass_filename.to_s, :load_paths => ['.']).to_css
       rescue Exception => e
         puts "#{sass_filename} raised #{e.inspect}"
       end
